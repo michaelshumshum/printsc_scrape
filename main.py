@@ -87,7 +87,8 @@ def get_image(q, e):
         except KeyboardInterrupt:
             break
         except Exception as e:
-            Logger.Log(text=e, severity=Logger.Error)
+            Logger.log(text=e, severity=Logger.Error)
+            raise KeyboardInterrupt
             e.clear()
             break
 
