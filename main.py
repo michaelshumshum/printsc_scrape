@@ -51,7 +51,7 @@ headers = {
 with open('imgur_empty.png', 'rb') as f:
     imgur_empty = f.read()
 
-invalid_src = b'<title>Attention Required! | Cloudflare</title>'
+invalid_src = [b'<title>Attention Required! | Cloudflare</title>', b'<h1>403 Forbidden</h1>']
 
 
 def save_image(q, e):
@@ -61,7 +61,7 @@ def save_image(q, e):
             if bytes == imgur_empty:
                 Logger.log(text=f'Skipping {name} due to deleted imgur source', severity=Logger.Moderate)
                 continue
-            if invalid_src in bytes:
+            if any(i in bytes for i in invalid_src):
                 Logger.log(text=f'Skipping "{name}" due to deletion', severity=Logger.Moderate)
                 continue
             with open(f'images/{name}.png', 'wb+') as f:
@@ -109,5 +109,5 @@ while True:
         for thread in threads:
             thread.join()
             Logger.log(text=f'Stopped {thread}', severity=Logger.Moderate)
-        Logger.log(text='Stopped', severity=Logger.Moderate)
+        Logger.log(text='Ended Script', severity=Logger.Moderate)
         break
